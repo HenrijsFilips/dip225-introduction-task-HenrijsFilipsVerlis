@@ -1,13 +1,19 @@
-def main():
-    dollars = dollars_to_float(input("How much was the meal? ").rstrip())
-    percent = percent_to_float(input("What percentage would you like to tip? ").rstrip())
-    tip = dollars * percent
-    print(f"Leave ${tip:.2f}")
-
-def dollars_to_float(d):
-    return float(d.lstrip('$'))
-
-def percent_to_float(p):
-    return float(p.rstrip('%')) / 100
-
-main()
+from openpyxl import Workbook, load_workbook 
+wb=load_workbook('tests/test1.xlsx')
+ws=wb.active
+total=0
+max_row = ws.max_row
+for row in range(2, max_row + 1):
+    id = ws['A' + str(row)].value
+    stunda = ws['B' + str(row)].value
+    likme = ws['C' + str(row)].value
+    if isinstance(stunda, (int, float)) and isinstance(likme, (int, float)) and 'a' not in str(stunda):
+        salary = stunda * likme
+        ws['D' + str(row)] = salary
+        if (salary > 3000):
+            total += 1  
+            
+            
+print(total)
+wb.save('tests/test1.xlsx')
+wb.close()
